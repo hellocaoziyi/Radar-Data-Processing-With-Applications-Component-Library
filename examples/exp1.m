@@ -19,5 +19,6 @@ end
 hold on;
 plot(X1(1,:),X1(3,:),'LineWidth',2,'DisplayName','目标运动轨迹');
 legend();
+title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20);
