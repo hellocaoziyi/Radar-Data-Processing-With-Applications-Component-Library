@@ -12,7 +12,7 @@ T = 1;
 [X1,Q] = constantVelocity(X1_0,k,T,q1);
 
 storageName = strcat('exp1_',num2str(monte),'.mat');
-save(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp1\',storageName],'X1','Q','k','T');
+save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'X1','Q','k','T');
 
 end
 

@@ -13,16 +13,16 @@ Xhat1_ciE_monte = 0;
 for monte = 1:50
     
 storageName = strcat('exp5_',num2str(monte),'.mat');
-load(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp5\',storageName]);
+load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\',storageName]);
 
-Xhat1_1_monte = Xhat1_1_monte + (X1 - Xhat1_1).^2;
-Xhat1_2_monte = Xhat1_2_monte + (X1 - Xhat1_2).^2;
-Xhat1_3_monte = Xhat1_3_monte + (X1 - Xhat1_3).^2;
-Xhat1_1E_monte = Xhat1_1E_monte + (X1 - Xhat1_1E).^2;
-Xhat1_2E_monte = Xhat1_2E_monte + (X1 - Xhat1_2E).^2;
-Xhat1_3E_monte = Xhat1_3E_monte + (X1 - Xhat1_3E).^2;
-Xhat1_ci_monte = Xhat1_ci_monte + (X1 - Xhat1_ci).^2;
-Xhat1_ciE_monte = Xhat1_ciE_monte + (X1 - Xhat1_ciE).^2;
+Xhat1_1_monte = Xhat1_1_monte + (X1(1,:) - Xhat1_1(1,:)).^2 + (X1(3,:) - Xhat1_1(3,:)).^2;
+Xhat1_2_monte = Xhat1_2_monte + (X1(1,:) - Xhat1_2(1,:)).^2 + (X1(3,:) - Xhat1_2(3,:)).^2;
+Xhat1_3_monte = Xhat1_3_monte + (X1(1,:) - Xhat1_3(1,:)).^2 + (X1(3,:) - Xhat1_3(3,:)).^2;
+Xhat1_1E_monte = Xhat1_1E_monte + (X1(1,:) - Xhat1_1E(1,:)).^2 + (X1(3,:) - Xhat1_1E(3,:)).^2;
+Xhat1_2E_monte = Xhat1_2E_monte + (X1(1,:) - Xhat1_2E(1,:)).^2 + (X1(3,:) - Xhat1_2E(3,:)).^2;
+Xhat1_3E_monte = Xhat1_3E_monte + (X1(1,:) - Xhat1_3E(1,:)).^2 + (X1(3,:) - Xhat1_3E(3,:)).^2;
+Xhat1_ci_monte = Xhat1_ci_monte + (X1(1,:) - Xhat1_ci(1,:)).^2 + (X1(3,:) - Xhat1_ci(3,:)).^2;
+Xhat1_ciE_monte = Xhat1_ciE_monte + (X1(1,:) - Xhat1_ciE(1,:)).^2 + (X1(3,:) - Xhat1_ciE(3,:)).^2;
 
 end
 
@@ -66,7 +66,7 @@ xlabel('x/m','FontSize',20);
 ylabel('y/m','FontSize',20);
 legend();
 storageName = strcat('exp6','.mat');
-save(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp6\',storageName],...
+save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp6\',storageName],...
     'Xhat1_1_monte','Xhat1_2_monte','Xhat1_3_monte',...
     'Xhat1_1E_monte','Xhat1_2E_monte','Xhat1_3E_monte',...
     'Xhat1_ci_monte','Xhat1_ciE_monte');

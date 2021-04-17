@@ -4,7 +4,7 @@ close all;
 for monte = 1:50
     
 storageName = strcat('exp1_',num2str(monte),'.mat');
-load(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp1\',storageName]);
+load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
 
 origin1 = [1500 5500]';
 origin2 = [4000 4000]';
@@ -19,7 +19,7 @@ Rpol3 = [0.09^2 0;0 150^2];
 [Zpol1_3,Zcart1_3] = polarMeasurement(X1,Rpol3,origin3);
 
 storageName = strcat('exp2_',num2str(monte),'.mat');
-save(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp2\',storageName],'X1','Q','k','T',...
+save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp2\',storageName],'X1','Q','k','T',...
     'origin1','origin2','origin3','Rpol1','Rpol2','Rpol3',...
     'Zpol1_1','Zpol1_2','Zpol1_3','Zcart1_1','Zcart1_2','Zcart1_3');
 

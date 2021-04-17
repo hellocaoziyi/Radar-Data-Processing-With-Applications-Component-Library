@@ -4,14 +4,14 @@ close all;
 for monte = 1:50
     
 storageName = strcat('exp2_',num2str(monte),'.mat');
-load(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp2\',storageName]);
+load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp2\',storageName]);
 
 [Xhat1_1E,P1_1E] = extendedKalmanFilter(Zpol1_1,Q,Rpol1,T,origin1);
 [Xhat1_2E,P1_2E] = extendedKalmanFilter(Zpol1_2,Q,Rpol2,T,origin2);
 [Xhat1_3E,P1_3E] = extendedKalmanFilter(Zpol1_3,Q,Rpol3,T,origin3);
 
 storageName = strcat('exp4_',num2str(monte),'.mat');
-save(['C:\workdir\Project\undergraduate\毕业设计\仿真实验\data\exp4\',storageName],'X1','Q','k','T',...
+save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp4\',storageName],'X1','Q','k','T',...
     'origin1','origin2','origin3','Rpol1','Rpol2','Rpol3',...
     'Zpol1_1','Zpol1_2','Zpol1_3','Zcart1_1','Zcart1_2','Zcart1_3',...
     'Xhat1_1E','Xhat1_2E','Xhat1_3E','P1_1E','P1_2E','P1_3E');
