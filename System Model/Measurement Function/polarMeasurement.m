@@ -1,12 +1,12 @@
-function [Zpol,Zcart] = polarMeasurement(targets,k,R,origin)
+function [Zpol,Zcart] = polarMeasurement(targets,R,origin)
 %POLARMEASUREMENT 雷达数据处理及应用器件库-系统模型-量测方程-极坐标量测模型
 %INPUTS：targets：目标运动轨迹
-%        k：仿真步数
 %        R：量测协方差
 %        origin：测量点直角坐标（可选，默认为原点）
 %OUTPUTS：Zpol：量测轨迹（极坐标）
 %         Zcart：量测轨迹（直角坐标）
-if nargin==3
+k = size(targets,2);
+if nargin==2
     H = [1 0 0 0;0 0 1 0];
     Zcart = zeros(2,k);
     Zpol = zeros(2,k);
@@ -15,7 +15,7 @@ if nargin==3
         Zcart(:,ni) = H*targets(:,ni);
         Zpol(:,ni) = cartesian2Polar(Zcart(1,ni),Zcart(2,ni)) + (randn(1,2)*delta)';
     end
-elseif nargin==4
+elseif nargin==3
     H = [1 0 0 0;0 0 1 0];
     Zcart = zeros(2,k);
     Zpol = zeros(2,k);

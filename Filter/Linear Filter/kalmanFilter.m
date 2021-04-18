@@ -1,4 +1,4 @@
-function [X,P] = kalmanFilter(Z,Q,Rpol,k,T,origin,X0,P0)
+function [X,P] = kalmanFilter(Z,Q,Rpol,T,origin,X0,P0)
 %KALMANFILTER 雷达数据处理及应用器件库-滤波器-线性滤波器-卡尔曼滤波
 %INPUT：Z：测量值
 %       Q：状态协方差
@@ -10,6 +10,7 @@ function [X,P] = kalmanFilter(Z,Q,Rpol,k,T,origin,X0,P0)
 %       P0：初始协方差（可选）
 %OUTPUT：X：估计状态
 %        P：估计协方差
+k = size(Z,2);
 X = zeros(4,k);
 Xpre = zeros(4,k);
 P = zeros(4,4,k);
@@ -26,7 +27,7 @@ H = [1 0 0 0
 Z(1,:) = Z(1,:) - origin(1,1);
 Z(2,:) = Z(2,:) - origin(2,1);
 
-if nargin == 8
+if nargin == 7
     X(:,1) = X0;
     P(:,1) = P0;
 else
@@ -34,7 +35,7 @@ else
     Zpol = cartesian2Polar(Z(1,1),Z(2,1));
     A = [cos(Zpol(1,1)) -1*Zpol(2,1)*sin(Zpol(1,1));...
         sin(Zpol(1,1)) Zpol(2,1)*cos(Zpol(1,1))];
-    R(:,:,1) = A*Rpol*A';
+    R(:,:,1) = A*[Rpol(2,2) 0;0 Rpol(1,1)]*A';
     P(:,:,1) = [R(1,1,1)    R(1,1,1)/T      R(1,2,1)    R(1,2,1)/T
                 R(1,1,1)/T  2*R(1,1,1)/T^2  R(1,2,1)/T  2*R(1,2,1)/T^2
                 R(1,2,1)    R(1,2,1)/T      R(2,2,1)    R(2,2,1)/T
@@ -47,7 +48,7 @@ for ni = 2:k
     Zpol = cartesian2Polar(Z(1,ni),Z(2,ni));
     A = [cos(Zpol(1,1)) -1*Zpol(2,1)*sin(Zpol(1,1));...
         sin(Zpol(1,1)) Zpol(2,1)*cos(Zpol(1,1))];
-    R(:,:,ni) = A*Rpol*A';
+    R(:,:,ni) = A*[Rpol(2,2) 0;0 Rpol(1,1)]*A';
     
     K(:,:,ni) = Pminus(:,:,ni)*H'/(H*Pminus(:,:,ni)*H'+R(:,:,ni));
     X(:,ni) = Xpre(:,ni) + K(:,:,ni)*(Z(:,ni)-H*Xpre(:,ni));
