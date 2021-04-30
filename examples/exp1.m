@@ -1,7 +1,7 @@
 clear;
 close all;
 
-for monte = 1:50
+
 
 X1_0 = [1000 170 8000 -120]';
 q1 = [5^2 0;0 5^2];
@@ -10,6 +10,8 @@ k = 50;
 T = 1;
 
 [X1,Q] = constantVelocity(X1_0,k,T,q1);
+
+for monte = 1:50
 
 storageName = strcat('exp1_',num2str(monte),'.mat');
 save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'X1','Q','k','T');

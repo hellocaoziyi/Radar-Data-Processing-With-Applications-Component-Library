@@ -15,12 +15,12 @@ for monte = 1:50
 storageName = strcat('exp5_',num2str(monte),'.mat');
 load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\',storageName]);
 
-Xhat1_1_monte = Xhat1_1_monte + (X1(1,:) - Xhat1_1(1,:)).^2 + (X1(3,:) - Xhat1_1(3,:)).^2;
-Xhat1_2_monte = Xhat1_2_monte + (X1(1,:) - Xhat1_2(1,:)).^2 + (X1(3,:) - Xhat1_2(3,:)).^2;
-Xhat1_3_monte = Xhat1_3_monte + (X1(1,:) - Xhat1_3(1,:)).^2 + (X1(3,:) - Xhat1_3(3,:)).^2;
-Xhat1_1E_monte = Xhat1_1E_monte + (X1(1,:) - Xhat1_1E(1,:)).^2 + (X1(3,:) - Xhat1_1E(3,:)).^2;
-Xhat1_2E_monte = Xhat1_2E_monte + (X1(1,:) - Xhat1_2E(1,:)).^2 + (X1(3,:) - Xhat1_2E(3,:)).^2;
-Xhat1_3E_monte = Xhat1_3E_monte + (X1(1,:) - Xhat1_3E(1,:)).^2 + (X1(3,:) - Xhat1_3E(3,:)).^2;
+Xhat1_1_monte = Xhat1_1_monte + (X1(1,:) - Xhat1(1,:,1)).^2 + (X1(3,:) - Xhat1(3,:,1)).^2;
+Xhat1_2_monte = Xhat1_2_monte + (X1(1,:) - Xhat1(1,:,2)).^2 + (X1(3,:) - Xhat1(3,:,2)).^2;
+Xhat1_3_monte = Xhat1_3_monte + (X1(1,:) - Xhat1(1,:,3)).^2 + (X1(3,:) - Xhat1(3,:,3)).^2;
+Xhat1_1E_monte = Xhat1_1E_monte + (X1(1,:) - Xhat1E(1,:,1)).^2 + (X1(3,:) - Xhat1E(3,:,1)).^2;
+Xhat1_2E_monte = Xhat1_2E_monte + (X1(1,:) - Xhat1E(1,:,2)).^2 + (X1(3,:) - Xhat1E(3,:,2)).^2;
+Xhat1_3E_monte = Xhat1_3E_monte + (X1(1,:) - Xhat1E(1,:,3)).^2 + (X1(3,:) - Xhat1E(3,:,3)).^2;
 Xhat1_ci_monte = Xhat1_ci_monte + (X1(1,:) - Xhat1_ci(1,:)).^2 + (X1(3,:) - Xhat1_ci(3,:)).^2;
 Xhat1_ciE_monte = Xhat1_ciE_monte + (X1(1,:) - Xhat1_ciE(1,:)).^2 + (X1(3,:) - Xhat1_ciE(3,:)).^2;
 
@@ -57,11 +57,11 @@ ylabel('RMSE/m','FontSize',20);
 figure();
 hold on;
 plot(X1(1,:),X1(3,:),'LineWidth',2,'DisplayName','真实运动轨迹');
-plot(Zcart1_1(1,:),Zcart1_1(2,:),':','LineWidth',2,'DisplayName','雷达1量测轨迹');
-plot(Xhat1_1(1,:),Xhat1_1(3,:),'-.','LineWidth',2,'DisplayName','雷达1 KF滤波轨迹');
-plot(Xhat1_1E(1,:),Xhat1_1E(3,:),'--','LineWidth',2,'DisplayName','雷达1 EKF滤波轨迹');
-scatter(origin1(1,1),origin1(2,1),'LineWidth',2,'DisplayName','雷达1 测量点');
-title('量测轨迹和滤波轨迹','FontSize',20);
+plot(Zcart1(1,:,1),Zcart1(2,:,1),':','LineWidth',2,'DisplayName','雷达1量测轨迹');
+plot(Xhat1(1,:,1),Xhat1(3,:,1),'-.','LineWidth',2,'DisplayName','雷达1 KF滤波轨迹');
+plot(Xhat1_ci(1,:),Xhat1_ci(3,:),'--','LineWidth',2,'DisplayName','各雷达KF滤波融合后轨迹');
+scatter(origin(1,1),origin(2,1),'LineWidth',2,'DisplayName','雷达1 测量点');
+title('量测轨迹和滤波轨迹和融合轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20);
 legend();

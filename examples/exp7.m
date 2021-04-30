@@ -59,6 +59,7 @@ plot(Xhat1_ci_monte(1,:),'m--','LineWidth',2,'DisplayName','KF CI');
 grid on;
 xlabel('仿真时间/s','FontSize',20); 
 ylabel('RMSE/m','FontSize',20);
+title('KF克拉美罗下界','FontSize',20);
 legend();
 
 figure();
@@ -74,4 +75,5 @@ plot(Xhat1_ciE_monte(1,:),'m--','LineWidth',2,'DisplayName','KF CI');
 grid on;
 xlabel('仿真时间/s','FontSize',20); 
 ylabel('RMSE/m','FontSize',20);
+title('EKF克拉美罗下界','FontSize',20);
 legend();
