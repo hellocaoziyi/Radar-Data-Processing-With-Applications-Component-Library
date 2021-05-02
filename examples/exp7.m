@@ -14,28 +14,24 @@ J = zeros(4,4,k);
 Jz = zeros(4,4,k);
 J(:,:,1) = eye(4);
 
-PCRB1 = posteriorCramerRaoLowerBound(k,Q,T,Rpol1,H,Zcart1_1,origin1,"KF");
-PCRB2 = posteriorCramerRaoLowerBound(k,Q,T,Rpol2,H,Zcart1_2,origin2,"KF");
-PCRB3 = posteriorCramerRaoLowerBound(k,Q,T,Rpol3,H,Zcart1_3,origin3,"KF");
+PCRB1 = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Zcart1,origin,"KF");
 
 for ni = 2:k
-    A1_1 = [cos(Zpol1_1(1,ni)) -1*Zpol1_1(2,ni)*sin(Zpol1_1(1,ni));...
-        sin(Zpol1_1(1,ni)) Zpol1_1(2,ni)*cos(Zpol1_1(1,ni))];
-    R1_1(:,:,ni) = A1_1*[Rpol1(2,2) 0;0 Rpol1(1,1)]*A1_1';
-    A1_2 = [cos(Zpol1_2(1,ni)) -1*Zpol1_2(2,ni)*sin(Zpol1_2(1,ni));...
-        sin(Zpol1_2(1,ni)) Zpol1_2(2,ni)*cos(Zpol1_2(1,ni))];
-    R1_2(:,:,ni) = A1_2*[Rpol2(2,2) 0;0 Rpol2(1,1)]*A1_2';
-    A1_3 = [cos(Zpol1_3(1,ni)) -1*Zpol1_3(2,ni)*sin(Zpol1_3(1,ni));...
-        sin(Zpol1_3(1,ni)) Zpol1_3(2,ni)*cos(Zpol1_3(1,ni))];
-    R1_3(:,:,ni) = A1_3*[Rpol3(2,2) 0;0 Rpol3(1,1)]*A1_3';
+    A1_1 = [cos(Zpol1(1,ni,1)) -1*Zpol1(2,ni,1)*sin(Zpol1(1,ni,1));...
+        sin(Zpol1(1,ni,1)) Zpol1(2,ni,1)*cos(Zpol1(1,ni,1))];
+    R1_1(:,:,ni) = A1_1*[Rpol(2,2,1) 0;0 Rpol(1,1,1)]*A1_1';
+    A1_2 = [cos(Zpol1(1,ni,2)) -1*Zpol1(2,ni,2)*sin(Zpol1(1,ni,2));...
+        sin(Zpol1(1,ni,2)) Zpol1(2,ni,2)*cos(Zpol1(1,ni,2))];
+    R1_2(:,:,ni) = A1_2*[Rpol(2,2,2) 0;0 Rpol(1,1,2)]*A1_2';
+    A1_3 = [cos(Zpol1(1,ni,3)) -1*Zpol1(2,ni,3)*sin(Zpol1(1,ni,3));...
+        sin(Zpol1(1,ni,3)) Zpol1(2,ni,3)*cos(Zpol1(1,ni,3))];
+    R1_3(:,:,ni) = A1_3*[Rpol(2,2,3) 0;0 Rpol(1,1,3)]*A1_3';
     Jz(:,:,ni) = H'*inv(R1_1(:,:,ni))*H + H'*inv(R1_2(:,:,ni))*H + H'*inv(R1_2(:,:,ni))*H;
     J(:,:,ni) = inv(Q + F*inv(J(:,:,ni-1))*F')+Jz(:,:,ni);
     PCRBci(ni) = (trace(inv(J(:,:,ni)))).^0.5;
 end
 
-PCRB1E = posteriorCramerRaoLowerBound(k,Q,T,Rpol1,Hjcob1,Zcart1_1,origin1,"EKF");
-PCRB2E = posteriorCramerRaoLowerBound(k,Q,T,Rpol2,Hjcob2,Zcart1_2,origin2,"EKF");
-PCRB3E = posteriorCramerRaoLowerBound(k,Q,T,Rpol3,Hjcob3,Zcart1_3,origin3,"EKF");
+PCRB1E = posteriorCramerRaoLowerBound(Q,T,Rpol,Hjcob,Zcart1,origin,"EKF");
 
 J = zeros(4,4,k);
 J(:,:,1) = eye(4);
@@ -43,19 +39,19 @@ PCRBciE = zeros(k,1);
 PCRBciE(1,1) = 1;
 
 for ni = 2:k
-    J(:,:,ni) = inv(Q + F*inv(J(:,:,ni-1))*F')+Hjcob1(:,:,ni)'*inv(Rpol1)*Hjcob1(:,:,ni)+Hjcob2(:,:,ni)'*inv(Rpol2)*Hjcob2(:,:,ni)+Hjcob3(:,:,ni)'*inv(Rpol3)*Hjcob3(:,:,ni);
+    J(:,:,ni) = inv(Q + F*inv(J(:,:,ni-1))*F')+Hjcob(:,:,ni,1)'*inv(Rpol(:,:,1))*Hjcob(:,:,ni,1)+Hjcob(:,:,ni,2)'*inv(Rpol(:,:,2))*Hjcob(:,:,ni,2)+Hjcob(:,:,ni,3)'*inv(Rpol(:,:,3))*Hjcob(:,:,ni,3);
     PCRBciE(ni) = (trace(inv(J(:,:,ni)))).^0.5;
 end
 
 hold on;
-plot(PCRB1(:,1),'k','LineWidth',2,'DisplayName','雷达1 KF PCRB');
-plot(PCRB2(:,1),'r','LineWidth',2,'DisplayName','雷达2 KF PCRB');
-plot(PCRB3(:,1),'b','LineWidth',2,'DisplayName','雷达3 KF PCRB');
-plot(PCRBci,'m','LineWidth',2,'DisplayName','KF CI PCRB');
-plot(Xhat1_1_monte(1,:),'k--','LineWidth',2,'DisplayName','雷达1 KF');
-plot(Xhat1_2_monte(1,:),'r--','LineWidth',2,'DisplayName','雷达2 KF');
-plot(Xhat1_3_monte(1,:),'b--','LineWidth',2,'DisplayName','雷达3 KF');
-plot(Xhat1_ci_monte(1,:),'m--','LineWidth',2,'DisplayName','KF CI');
+plot(PCRB1(:,1),'Color','#D95319','LineStyle',':','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','雷达1 KF PCRB');
+plot(PCRB1(:,2),'Color','#EDB120','LineStyle','--','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','雷达2 KF PCRB');
+plot(PCRB1(:,3),'Color','#7E2F8E','LineStyle','-.','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','雷达3 KF PCRB');
+plot(PCRBci,'Color','#77AC30','LineStyle','-','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','KF CI PCRB');
+plot(Xhat1_monte(:,1),'Color','#D95319','LineStyle',':','LineWidth',1,'DisplayName','雷达1 KF 滤波');
+plot(Xhat1_monte(:,2),'Color','#EDB120','LineStyle','--','LineWidth',1,'DisplayName','雷达2 KF 滤波');
+plot(Xhat1_monte(:,3),'Color','#7E2F8E','LineStyle','-.','LineWidth',1,'DisplayName','雷达3 KF 滤波');
+plot(Xhat1_ci_monte(1,:),'Color','#77AC30','LineStyle','-','LineWidth',1,'DisplayName','KF 滤波 CI 融合');
 grid on;
 xlabel('仿真时间/s','FontSize',20); 
 ylabel('RMSE/m','FontSize',20);
@@ -64,14 +60,14 @@ legend();
 
 figure();
 hold on;
-plot(PCRB1E(:,1),'k','LineWidth',2,'DisplayName','雷达1 EKF PCRB');
-plot(PCRB2E(:,1),'r','LineWidth',2,'DisplayName','雷达2 EKF PCRB');
-plot(PCRB3E(:,1),'b','LineWidth',2,'DisplayName','雷达3 EKF PCRB');
-plot(PCRBciE,'m','LineWidth',2,'DisplayName','KF CI PCRB');
-plot(Xhat1_1E_monte(1,:),'k--','LineWidth',2,'DisplayName','雷达1 EKF');
-plot(Xhat1_2E_monte(1,:),'r--','LineWidth',2,'DisplayName','雷达2 EKF');
-plot(Xhat1_3E_monte(1,:),'b--','LineWidth',2,'DisplayName','雷达3 EKF');
-plot(Xhat1_ciE_monte(1,:),'m--','LineWidth',2,'DisplayName','KF CI');
+plot(PCRB1E(:,1),'Color','#D95319','LineStyle',':','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','雷达1 EKF PCRB');
+plot(PCRB1E(:,2),'Color','#EDB120','LineStyle','--','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','雷达2 EKF PCRB');
+plot(PCRB1E(:,3),'Color','#7E2F8E','LineStyle','-.','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','雷达3 EKF PCRB');
+plot(PCRBciE,'Color','#77AC30','LineStyle','-','Marker','d','MarkerIndices',1:5:size(PCRB1,1),'LineWidth',1,'DisplayName','EKF CI PCRB');
+plot(Xhat1E_monte(:,1),'Color','#D95319','LineStyle',':','LineWidth',1,'DisplayName','雷达1 EKF 滤波');
+plot(Xhat1E_monte(:,2),'Color','#EDB120','LineStyle','--','LineWidth',1,'DisplayName','雷达2 EKF 滤波');
+plot(Xhat1E_monte(:,3),'Color','#7E2F8E','LineStyle','-.','LineWidth',1,'DisplayName','雷达3 EKF 滤波');
+plot(Xhat1_ciE_monte(1,:),'Color','#77AC30','LineStyle','-','LineWidth',1,'DisplayName','EKF 滤波 CI 融合');
 grid on;
 xlabel('仿真时间/s','FontSize',20); 
 ylabel('RMSE/m','FontSize',20);

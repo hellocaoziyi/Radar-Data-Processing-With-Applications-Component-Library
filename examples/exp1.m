@@ -19,7 +19,7 @@ save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Co
 end
 
 hold on;
-plot(X1(1,:),X1(3,:),'LineWidth',2,'DisplayName','目标运动轨迹');
+plot(X1(1,:),X1(3,:),'Color','#0072BD','LineWidth',2,'DisplayName','目标运动轨迹');
 legend();
 title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
