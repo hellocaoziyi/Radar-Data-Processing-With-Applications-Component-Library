@@ -1,4 +1,4 @@
-clear;
+clearvars -except exp_ni;
 clc;
 close all;
 

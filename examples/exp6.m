@@ -1,4 +1,4 @@
-clear;
+clearvars -except exp_ni;
 close all;
 
 storageName = strcat('exp5_',num2str(1),'.mat');
@@ -31,6 +31,7 @@ end
 Xhat1_ci_monte = (Xhat1_ci_monte./monte).^0.5;
 Xhat1_ciE_monte = (Xhat1_ciE_monte./monte).^0.5;
 
+exp6_1 = figure('Name','exp6_1');
 hold on;
 plot(Xhat1_monte(:,1),'Color','#D95319','LineStyle',':','LineWidth',2,'DisplayName','雷达1 KF 滤波');
 plot(Xhat1_monte(:,2),'Color','#EDB120','LineStyle','--','LineWidth',2,'DisplayName','雷达2 KF 滤波');
@@ -40,7 +41,10 @@ title('Kalman 滤波误差分析','FontSize',20);
 legend();
 xlabel('仿真时间/s','FontSize',20);
 ylabel('RMSE/m','FontSize',20);
-figure();
+exportgraphics(exp6_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_1.emf','Resolution',600);
+exportgraphics(exp6_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_1.jpg','Resolution',600);
+
+exp6_2 = figure('Name','exp6_2');
 hold on;
 plot(Xhat1E_monte(:,1),'Color','#D95319','LineStyle',':','LineWidth',2,'DisplayName','雷达1 EKF 滤波');
 plot(Xhat1E_monte(:,2),'Color','#EDB120','LineStyle','--','LineWidth',2,'DisplayName','雷达2 EKF 滤波');
@@ -50,7 +54,10 @@ title('Extended Kalman 滤波误差分析','FontSize',20);
 legend();
 xlabel('仿真时间/s','FontSize',20);
 ylabel('RMSE/m','FontSize',20);
-figure();
+exportgraphics(exp6_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_2.emf','Resolution',600);
+exportgraphics(exp6_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_2.jpg','Resolution',600);
+
+exp6_3 = figure('Name','exp6_3');
 hold on;
 plot(X1(1,:),X1(3,:),'Color','#0072BD','LineWidth',2,'DisplayName','目标运动轨迹');
 plot(Zcart1(1,:,1),Zcart1(2,:,1),'Color','#D95319','LineStyle',':','LineWidth',2,'DisplayName','雷达1量测轨迹');
@@ -61,6 +68,9 @@ title('量测轨迹和滤波轨迹和融合轨迹','FontSize',20);
 xlabel('x/m','FontSize',20);
 ylabel('y/m','FontSize',20);
 legend();
+exportgraphics(exp6_3,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_3.emf','Resolution',600);
+exportgraphics(exp6_3,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_3.jpg','Resolution',600);
+
 storageName = strcat('exp6','.mat');
 save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp6\',storageName],...
     'Xhat1_monte',...

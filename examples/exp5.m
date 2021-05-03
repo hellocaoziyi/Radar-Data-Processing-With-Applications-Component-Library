@@ -1,4 +1,4 @@
-clear;
+clearvars -except exp_ni;
 close all;
 
 for monte = 1:50

@@ -1,4 +1,4 @@
-clear;
+clearvars -except exp_ni;
 close all;
 
 
@@ -18,9 +18,12 @@ save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Co
 
 end
 
+exp1_1 = figure('Name','exp1_1');
 hold on;
 plot(X1(1,:),X1(3,:),'Color','#0072BD','LineWidth',2,'DisplayName','目标运动轨迹');
 legend();
 title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20);
+exportgraphics(exp1_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.emf','Resolution',600);
+exportgraphics(exp1_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.jpg','Resolution',600);

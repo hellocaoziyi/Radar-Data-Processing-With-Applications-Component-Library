@@ -1,4 +1,4 @@
-clear;
+clearvars -except exp_ni;
 close all;
 
 for monte = 1:50
@@ -16,6 +16,7 @@ for monte = 1:50
     
 end
 
+exp3_1 = figure('Name','exp3_1');
 hold on;
 plot(X1(1,:),X1(3,:),'Color','#0072BD','LineStyle','-','LineWidth',2,'DisplayName','真实轨迹');
 scatter(origin(1,1),origin(2,1),'MarkerEdgeColor','#D95319','Marker','o','LineWidth',2,'DisplayName','雷达1 量测点');
@@ -28,3 +29,5 @@ title('运动轨迹和滤波轨迹','FontSize',20);
 xlabel('x/m','FontSize',20);
 ylabel('y/m','FontSize',20);
 legend();
+exportgraphics(exp3_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp3_1.emf','Resolution',600);
+exportgraphics(exp3_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp3_1.jpg','Resolution',600);
