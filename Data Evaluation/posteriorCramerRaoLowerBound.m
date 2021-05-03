@@ -1,4 +1,4 @@
-function PCRBdata = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Z,origin,mode)
+function PCRBdata = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Z,origin,P,mode)
 %POSTERIORCRAMERRAOLOWERBOUND 此处显示有关此函数的摘要
 %INPUT: Q：一个4X4的矩阵，状态协方差矩阵
 %       k：仿真步数
@@ -17,8 +17,6 @@ if mode == "KF"
     J = zeros(4,4,frame,origin_total);
     PCRBdata = zeros(frame,origin_total);
     for origin_num = 1:origin_total
-        J(:,:,1,origin_num) = eye(4);
-        PCRBdata(1,origin_num) = 1;
         
         Z(1,:,origin_num) = Z(1,:,origin_num) - origin(1,origin_num);
         Z(2,:,origin_num) = Z(2,:,origin_num) - origin(2,origin_num);
@@ -27,6 +25,9 @@ if mode == "KF"
         A = [cos(Zpol(1,1)) -1*Zpol(2,1)*sin(Zpol(1,1));...
             sin(Zpol(1,1)) Zpol(2,1)*cos(Zpol(1,1))];
         R(:,:,1,origin_num) = A*[Rpol(2,2,origin_num) 0;0 Rpol(1,1,origin_num)]*A';
+        
+        J(:,:,1,origin_num) =inv(Q + P(:,:,1,origin_num))+H'*inv(R(:,:,1,origin_num))*H;
+        PCRBdata(1,origin_num) = (trace(inv(J(:,:,1,origin_num)))).^0.5;
         
         for ni = 2:frame
             Zpol = cartesian2Polar(Z(1,ni,origin_num),Z(2,ni,origin_num));
@@ -43,8 +44,8 @@ elseif mode == "EKF"
     J = zeros(4,4,frame,origin_total);
     PCRBdata = zeros(frame,origin_total);
     for origin_num = 1:origin_total
-        J(:,:,1,origin_num) = eye(4);        
-        PCRBdata(1,origin_num) = 1;       
+        J(:,:,1,origin_num) =inv(Q + P(:,:,1,origin_num))++H(:,:,1,origin_num)'*inv(Rpol(:,:,origin_num))*H(:,:,1,origin_num);
+        PCRBdata(1,origin_num) = (trace(inv(J(:,:,1,origin_num)))).^0.5;
         for ni = 2:frame
             J(:,:,ni,origin_num) = inv(Q + F*inv(J(:,:,ni-1,origin_num))*F')+H(:,:,ni,origin_num)'*inv(Rpol(:,:,origin_num))*H(:,:,ni,origin_num);
             PCRBdata(ni,origin_num) = (trace(inv(J(:,:,ni,origin_num)))).^0.5;

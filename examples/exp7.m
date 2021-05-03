@@ -14,7 +14,7 @@ J = zeros(4,4,k);
 Jz = zeros(4,4,k);
 J(:,:,1) = eye(4);
 
-PCRB1 = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Zcart1,origin,"KF");
+PCRB1 = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Zcart1,origin,P1,"KF");
 
 for ni = 2:k
     A1_1 = [cos(Zpol1(1,ni,1)) -1*Zpol1(2,ni,1)*sin(Zpol1(1,ni,1));...
@@ -31,7 +31,7 @@ for ni = 2:k
     PCRBci(ni) = (trace(inv(J(:,:,ni)))).^0.5;
 end
 
-PCRB1E = posteriorCramerRaoLowerBound(Q,T,Rpol,Hjcob,Zcart1,origin,"EKF");
+PCRB1E = posteriorCramerRaoLowerBound(Q,T,Rpol,Hjcob,Zcart1,origin,P1E,"EKF");
 
 J = zeros(4,4,k);
 J(:,:,1) = eye(4);
