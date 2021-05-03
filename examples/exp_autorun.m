@@ -6,3 +6,4 @@ for exp_ni = 1:7
     close all;
     fprintf('exp%d运行完成\n', exp_ni);
 end
+fprintf('exp1到exp%d已经全部运行完成\n', exp_ni);
