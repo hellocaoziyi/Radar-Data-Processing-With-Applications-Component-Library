@@ -1,4 +1,4 @@
-function [X,P,H] = extendedKalmanFilter(Z,Q,Rpol,T,origin,X0,P0)
+function station = extendedKalmanFilter(target,station,X0,P0)
 %EXTENDEDKALMANFILTER 雷达数据处理及应用器件库-滤波器-非线性滤波器-扩展卡尔曼滤波
 %INPUT：Z：测量值
 %       Q：状态协方差
@@ -10,8 +10,14 @@ function [X,P,H] = extendedKalmanFilter(Z,Q,Rpol,T,origin,X0,P0)
 %       P0：初始协方差（可选）
 %OUTPUT：X：估计状态
 %        P：估计协方差
-frame = size(Z,2);
-origin_total = size(Rpol,3);
+Z = station.Zpol;
+Q = target.Q;
+Rpol = station.Rpol;
+T = target.dt;
+origin = station.origin;
+frame = target.frame;
+origin_total = station.num;
+
 X = zeros(4,frame,origin_total);
 Xpre = zeros(4,frame,origin_total);
 P = zeros(4,4,frame,origin_total);
@@ -26,7 +32,7 @@ H = zeros(2,4,frame,origin_total);
 
 for origin_num = 1:origin_total
     
-    if nargin == 7
+    if nargin == 4
         X(:,1,origin_num) = X0;
         P(:,1,origin_num) = P0;
     else
@@ -113,6 +119,10 @@ for origin_num = 1:origin_total
     X(3,:,origin_num) = X(3,:,origin_num) + origin(2,origin_num);
     
 end
+
+station.XhatE = X;
+station.PE = P;
+station.Hjcob = H;
 
 %------------------------------
     function zp = hx(xhat)

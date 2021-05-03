@@ -3,22 +3,14 @@ close all;
 
 for monte = 1:50
     
-storageName = strcat('exp3_',num2str(monte),'.mat');
-load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp3\',storageName]);
 storageName2 = strcat('exp4_',num2str(monte),'.mat');
-load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp4\',storageName2],...
-    'Xhat1E','P1E','Hjcob');
+load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp4\',storageName2]);
 
-[Xhat1_ci,P1_ci] = covarianceIntersection(Xhat1(:,:,1),P1(:,:,:,1),1.2,Xhat1(:,:,2),P1(:,:,:,2),1,Xhat1(:,:,3),P1(:,:,:,3),0.8);
-[Xhat1_ciE,P1_ciE] = covarianceIntersection(Xhat1E(:,:,1),P1E(:,:,:,1),1.2,Xhat1E(:,:,2),P1(:,:,:,2),1,Xhat1E(:,:,3),P1E(:,:,:,3),0.8);
+[station.Xhat_ci,station.P_ci] = covarianceIntersection(station.Xhat(:,:,1),station.P(:,:,:,1),1.2,station.Xhat(:,:,2),station.P(:,:,:,2),1,station.Xhat(:,:,3),station.P(:,:,:,3),0.8);
+[station.XhatE_ci,station.PE_ci] = covarianceIntersection(station.XhatE(:,:,1),station.PE(:,:,:,1),1.2,station.XhatE(:,:,2),station.PE(:,:,:,2),1,station.XhatE(:,:,3),station.PE(:,:,:,3),0.8);
 
 storageName = strcat('exp5_',num2str(monte),'.mat');
-save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\',storageName],'X1','Q','k','T',...
-    'origin','Rpol',...
-    'Zpol1','Zcart1',...
-    'Xhat1','P1',...
-    'Xhat1E','P1E',...
-    'Xhat1_ci','P1_ci','Xhat1_ciE','P1_ciE',...
-    'Hjcob');
+save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\',storageName],...
+    'target','station');
 
 end
