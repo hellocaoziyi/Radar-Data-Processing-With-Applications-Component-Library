@@ -70,4 +70,5 @@ for origin_num = 1:origin_total
 end
 station.Xhat = X;
 station.P = P;
+station.R = R;
 end

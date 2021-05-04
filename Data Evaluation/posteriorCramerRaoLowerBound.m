@@ -1,4 +1,4 @@
-function PCRBdata = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Z,origin,P,mode)
+function station = posteriorCramerRaoLowerBound(target,station,mode)
 %POSTERIORCRAMERRAOLOWERBOUND 此处显示有关此函数的摘要
 %INPUT: Q：一个4X4的矩阵，状态协方差矩阵
 %       k：仿真步数
@@ -6,12 +6,20 @@ function PCRBdata = posteriorCramerRaoLowerBound(Q,T,Rpol,H,Z,origin,P,mode)
 %       F：状态转移矩阵
 %       H：量测转移矩阵
 
-F = [1 T 0 0
+if mode == "KF"
+    Q = target.Q;
+    T = target.dt;
+    Rpol = station.Rpol;
+    H = station.H;
+    Z = station.Zcart;
+    origin = station.origin;
+    P = station.P;
+    
+    F = [1 T 0 0
     0 1 0 0
     0 0 1 T
     0 0 0 1];
-
-if mode == "KF"
+    
     frame = size(Z,2);
     origin_total = size(Rpol,3);
     J = zeros(4,4,frame,origin_total);
@@ -38,7 +46,23 @@ if mode == "KF"
             PCRBdata(ni,origin_num) = (trace(inv(J(:,:,ni,origin_num)))).^0.5;
         end
     end
+    
+    station.PCRB = PCRBdata;
+    
 elseif mode == "EKF"
+
+    Q = target.Q;
+    T = target.dt;
+    Rpol = station.Rpol;
+    H = station.Hjcob;
+    Z = station.Zcart;
+    P = station.PE;
+    
+    F = [1 T 0 0
+    0 1 0 0
+    0 0 1 T
+    0 0 0 1];
+    
     frame = size(Z,2);
     origin_total = size(Rpol,3);
     J = zeros(4,4,frame,origin_total);
@@ -52,6 +76,8 @@ elseif mode == "EKF"
         end
     end
 end
+
+station.PCRBE = PCRBdata;
 
 end
 
