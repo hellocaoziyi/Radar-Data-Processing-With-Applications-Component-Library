@@ -1,15 +1,15 @@
-clearvars -except exp_ni;
+clearvars -except i_exp nMonte;
 close all;
 
-for monte = 1:50
+for iMonte = 1:nMonte
     
-storageName2 = strcat('exp4_',num2str(monte),'.mat');
+storageName2 = strcat('exp4_',num2str(iMonte),'.mat');
 load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp4\',storageName2]);
 
-station = covarianceIntersection(target,station);
+Station = covarianceIntersection(Target,Station);
 
-storageName = strcat('exp5_',num2str(monte),'.mat');
+storageName = strcat('exp5_',num2str(iMonte),'.mat');
 save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\',storageName],...
-    'target','station');
+    'Target','Station');
 
 end

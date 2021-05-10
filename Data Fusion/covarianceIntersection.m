@@ -1,47 +1,46 @@
-function station = covarianceIntersection(target,station)
+function Station = covarianceIntersection(Target,Station)
 %COVARIANCEINTERSECTION 雷达数据处理及应用器件库-数据融合-协方差交叉
-%INPUT：varargin{ni*3-2}：状态估计矩阵
-%       varargin{ni*3-1}：状态估计协方差矩阵
-%       varargin{ni*3}：状态估计权重
+%INPUT：varargin{jStation*3-2}：状态估计矩阵
+%       varargin{jStation*3-1}：状态估计协方差矩阵
+%       varargin{jStation*3}：状态估计权重
 %OUTPUT：Xci：融合后状态估计矩阵
 %        Pci：融合后状态估计协方差矩阵
-groups = station.num;
-k = target.frame;
-w = zeros(k,groups);
-sumw = zeros(1,k);
-k = target.frame;
-for nj = 1:k
-    for ni = 1:groups
-        w(nj,ni) = trace(station.R(:,:,k,ni));
-        sumw(1,nj) = inv(w(nj,ni))+sumw(1,nj);
+nStation = Station.nStation;
+nIter = Target.nIter;
+w = zeros(nIter,nStation);
+sumw = zeros(1,nIter);
+for iIter = 1:nIter
+    for jStation = 1:nStation
+        w(iIter,jStation) = trace(Station.R(:,:,nIter,jStation));
+        sumw(1,iIter) = inv(w(iIter,jStation))+sumw(1,iIter);
     end
 end
-for nj =1:k
-    for ni = 1:groups
-        w(nj,ni) = inv(w(nj,ni))/sumw(1,nj);
+for iIter =1:nIter
+    for jStation = 1:nStation
+        w(iIter,jStation) = inv(w(iIter,jStation))/sumw(1,iIter);
     end
 end
-Pci = zeros(4,4,k);
-PEci = zeros(4,4,k);
-Xci = zeros(4,k);
-XEci = zeros(4,k);
-for ni = 1:k
-    for nj = 1:groups
-        Pci(:,:,ni) = Pci(:,:,ni) + w(ni,nj).*inv(station.P(:,:,ni,nj));
-        PEci(:,:,ni) = PEci(:,:,ni) + w(ni,nj).*inv(station.PE(:,:,ni,nj));
+Pci = zeros(4,4,nIter);
+PEci = zeros(4,4,nIter);
+Xci = zeros(4,nIter);
+XEci = zeros(4,nIter);
+for jStation = 1:nIter
+    for iIter = 1:nStation
+        Pci(:,:,jStation) = Pci(:,:,jStation) + w(jStation,iIter).*inv(Station.P(:,:,jStation,iIter));
+        PEci(:,:,jStation) = PEci(:,:,jStation) + w(jStation,iIter).*inv(Station.PE(:,:,jStation,iIter));
     end
-    Pci(:,:,ni) = inv(Pci(:,:,ni));
-    PEci(:,:,ni) = inv(PEci(:,:,ni));
+    Pci(:,:,jStation) = inv(Pci(:,:,jStation));
+    PEci(:,:,jStation) = inv(PEci(:,:,jStation));
 end
-for ni = 1:k
-    for nj = 1:groups
-        Xci(:,ni) = Xci(:,ni) + w(ni,nj).*inv(station.P(:,:,ni,nj))*station.Xhat(:,ni,nj);
-        XEci(:,ni) = XEci(:,ni) + w(ni,nj).*inv(station.PE(:,:,ni,nj))*station.XhatE(:,ni,nj);
+for jStation = 1:nIter
+    for iIter = 1:nStation
+        Xci(:,jStation) = Xci(:,jStation) + w(jStation,iIter).*inv(Station.P(:,:,jStation,iIter))*Station.Xhat(:,jStation,iIter);
+        XEci(:,jStation) = XEci(:,jStation) + w(jStation,iIter).*inv(Station.PE(:,:,jStation,iIter))*Station.XEhat(:,jStation,iIter);
     end
-    Xci(:,ni)   = Pci(:,:,ni)*Xci(:,ni);
-    XEci(:,ni)   = PEci(:,:,ni)*XEci(:,ni);
+    Xci(:,jStation)   = Pci(:,:,jStation)*Xci(:,jStation);
+    XEci(:,jStation)   = PEci(:,:,jStation)*XEci(:,jStation);
 end
-station.Xhat_ci = Xci;
-station.XhatE_ci = XEci;
-station.P_ci = Pci;
-station.PE_ci = PEci;
+Station.Xhat_ci = Xci;
+Station.XEhat_ci = XEci;
+Station.P_ci = Pci;
+Station.PE_ci = PEci;

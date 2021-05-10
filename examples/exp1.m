@@ -1,24 +1,25 @@
-clearvars -except exp_ni;
+clearvars -except i_exp nMonte;
 close all;
 
-target.X0 = [1000 170 8000 -120]';
-target.q = [5^2 0;0 5^2];
+nMonte = 50;
 
-target.frame = 50;
-target.dt = 1;
+Target.X0 = [1000 170 8000 -120]';
+Target.q = [5^2 0;0 5^2];
+Target.nIter = 50;
+Target.dt = 1;
 
-target = constantVelocity(target);
+for iMonte = 1:nMonte
 
-for monte = 1:50
+Target = constantVelocity(Target);
 
-storageName = strcat('exp1_',num2str(monte),'.mat');
-save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'target');
+storageName = strcat('exp1_',num2str(iMonte),'.mat');
+save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'Target');
 
 end
 
 exp1_1 = figure('Name','exp1_1');
 hold on;
-plot(target.X(1,:),target.X(3,:),'Color','#0072BD','LineWidth',2,'DisplayName','目标运动轨迹');
+plot(Target.X(1,:),Target.X(3,:),'Color','#0072BD','LineWidth',2,'DisplayName','目标运动轨迹');
 legend();
 title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
