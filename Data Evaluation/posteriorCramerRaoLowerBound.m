@@ -6,15 +6,16 @@ if mode == "KF"
     Q = Target.Q;
     T = Target.dt;
     Rpol = Station.Rpol;
-    H = Station.H;
+%     H = Station.H;
+    H = [1 1 0 0;0 0 1 1];
     Z = Station.Zcart;
     address = Station.address;
     P = Station.P;
     
     F = [1 T 0 0
-    0 1 0 0
-    0 0 1 T
-    0 0 0 1];
+        0 1 0 0
+        0 0 1 T
+        0 0 0 1];
     
     nIter = Target.nIter;
     nStation = Station.nStation;
@@ -39,14 +40,17 @@ if mode == "KF"
                 sin(Zpol(1,1)) Zpol(2,1)*cos(Zpol(1,1))];
             R(:,:,jIter,iStation) = A*[Rpol(2,2,iStation) 0;0 Rpol(1,1,iStation)]*A';
             J(:,:,jIter,iStation) = inv(Q(:,:,jIter) + F*inv(J(:,:,jIter-1,iStation))*F')+H'*inv(R(:,:,jIter,iStation))*H;
-            PCRBdata(jIter,iStation) = (trace(inv(J(:,:,jIter,iStation)))).^0.5;
+            %             PCRBdata(jIter,iStation) = (trace(inv(J(:,:,jIter,iStation)))).^0.5;
+            PCRBtemp = inv(J(:,:,1));
+            PCRBdata(jIter,iStation) = (PCRBtemp(1,1)+PCRBtemp(3,3)).^0.5;
+            
         end
     end
     
     Station.PCRB = PCRBdata;
     
 elseif mode == "EKF"
-
+    
     Q = Target.Q;
     T = Target.dt;
     Rpol = Station.Rpol;
@@ -55,9 +59,9 @@ elseif mode == "EKF"
     P = Station.PE;
     
     F = [1 T 0 0
-    0 1 0 0
-    0 0 1 T
-    0 0 0 1];
+        0 1 0 0
+        0 0 1 T
+        0 0 0 1];
     
     nIter = size(Z,2);
     nStation = size(Rpol,3);

@@ -17,8 +17,7 @@ for iMonte = 1:nMonte
     iMonte
 
 %量测参数
-% Station.address = [1400 5800;2100 4700;2800 3900;3900 3100;5100 2500]';
-Station.address = [1400 5300;2100 4400;3200 3500;4400 2800;5900 2300]';
+Station.address = [1400 5800;2100 4700;2800 3900;3900 3100;5100 2500]';
 Station.nStation = size(Station.address,2);
 Station.R = zeros(2,2,Target.nIter,Station.nStation);
 Station.rcs = ones(Station.nStation,Target.nIter);
@@ -60,10 +59,17 @@ Station1.Xci = zeros(4,Target.nIter);
 Station1.sumw = zeros(1,Target.nIter);
 Station1.w = zeros(Station1.nStation,Target.nIter);
 
+%赋初值
+Station.Xhat(:,1,1) = Target.X(:,1);
+Station.Xhat(:,1,2) = Target.X(:,1);
+Station.Xhat(:,1,3) = Target.X(:,1);
+Station1.Xhat(:,1,1) = Target.X(:,1);
+Station1.Xhat(:,1,2) = Target.X(:,1);
+Station1.Xhat(:,1,3) = Target.X(:,1);
+Station.Xci(:,1) = Target.X(:,1);
+Station1.Xci(:,1) = Target.X(:,1);
 Station = measurementNoise(Target,Station,1);
 Station1 = measurementNoise(Target,Station1,1);
-Station = cartesianMeasurementSingle(Target,Station,1);
-Station1 = cartesianMeasurementSingle(Target,Station1,1);
 for jStation = 1:Station.nStation
     R = Station.R;
     T = Target.dt;
@@ -102,18 +108,6 @@ for i_ci = 1:Station1.nStation
 end
 Station.Pci(:,:,1) = inv(Station.Pci(:,:,1));
 Station1.Pci(:,:,1) = inv(Station1.Pci(:,:,1));
-Xci = 0;
-for i_ci = 1:Station.nStation
-    Station.Xhat(:,1,i_ci) = [Station.Z(1,1,i_ci) 0 Station.Z(2,1,i_ci) 0]';
-    Xci = Xci + Station.w(i_ci,1).*inv(Station.P(:,:,1,i_ci))*Station.Xhat(:,1,i_ci);
-end
-Station.Xci(:,1)   = Station.Pci(:,:,1)*Xci;
-Xci = 0;
-for i_ci = 1:Station1.nStation
-    Station1.Xhat(:,1,i_ci) = [Station1.Z(1,1,i_ci) 0 Station1.Z(2,1,i_ci) 0]';
-    Xci = Xci + Station1.w(i_ci,1).*inv(Station1.P(:,:,1,i_ci))*Station1.Xhat(:,1,i_ci);
-end
-Station1.Xci(:,1)   = Station1.Pci(:,:,1)*Xci;
 Station.jptemp = 0;
 Station1.jptemp = 0;
 for i_ci = 1:Station.nStation
@@ -124,13 +118,16 @@ for i_ci = 1:Station1.nStation
 end
 Station.FIM(:,:,1) = inv(Target.Q(:,:,1) + Station.Pci(:,:,1))+Station.jptemp;
 Station1.FIM(:,:,1) = inv(Target.Q(:,:,1) + Station1.Pci(:,:,1))+Station1.jptemp;
-Station.PCRB(1) = trace(inv(Station.FIM(:,:,1))).^0.5;
-Station1.PCRB(1) = trace(inv(Station1.FIM(:,:,1))).^0.5;
+Station.PCRB(1) = trace(inv(Station.FIM(:,:,1)));
+Station1.PCRB(1) = trace(inv(Station1.FIM(:,:,1)));
+Station = cartesianMeasurementSingle(Target,Station,1);
+Station1 = cartesianMeasurementSingle(Target,Station1,1);
 
 %跟踪滤波
 for iIter = 2:Target.nIter
     
     %状态一步预测
+    
     Station.Xci(:,iIter) = Target.F * Station.Xci(:,iIter-1);
     Station1.Xci(:,iIter) = Target.F * Station1.Xci(:,iIter-1);
     
@@ -145,10 +142,11 @@ for iIter = 2:Target.nIter
     Station = measurementNoise(Target,Station,iIter);
     Station1 = measurementNoise(Target,Station1,iIter);
     
+    Htemp = [1 Target.dt 0 0;0 0 1 Target.dt];
     Station1.FIM(:,:,iIter) = inv(Target.Q(:,:,iIter)+Target.F*inv(Station1.FIM(:,:,iIter-1))*Target.F') + ...
-        Station1.H'*inv(Station1.R(:,:,iIter,1))*Station1.H + ...
-        Station1.H'*inv(Station1.R(:,:,iIter,2))*Station1.H + ...
-        Station1.H'*inv(Station1.R(:,:,iIter,3))*Station1.H;
+        Htemp'*inv(Station1.R(:,:,iIter,1))*Htemp + ...
+        Htemp'*inv(Station1.R(:,:,iIter,2))*Htemp + ...
+        Htemp'*inv(Station1.R(:,:,iIter,3))*Htemp;
     Station1.PCRB(iIter) = trace(inv(Station1.FIM(:,:,iIter))).^0.5;
     
     Station = cartesianMeasurementSingle(Target,Station,iIter);
@@ -156,20 +154,20 @@ for iIter = 2:Target.nIter
     
     for jStation = 1:Station.nStation
         
-        Station.Xhat(:,iIter,jStation) = Target.F * Station.Xhat(:,iIter-1,jStation);
+        Station.Xhat(:,iIter,jStation) = Target.F*Station.Xhat(:,iIter-1,jStation);
         Station.Pminus(:,:,iIter,jStation)=Target.F*Station.P(:,:,iIter-1,jStation)*Target.F'+Target.Q(:,:,iIter);
         Station.K(:,:,iIter,jStation) = Station.Pminus(:,:,iIter,jStation)*Station.H'/(Station.H*Station.Pminus(:,:,iIter,jStation)*Station.H'+Station.R(:,:,iIter,jStation));
         Station.Xhat(:,iIter,jStation) = Station.Xhat(:,iIter,jStation) + Station.K(:,:,iIter,jStation)*(Station.Z(:,iIter,jStation)-Station.H*Station.Xhat(:,iIter,jStation));
-        Station.P(:,:,iIter,jStation) = (eye(4)-Station.K(:,:,iIter,jStation)*Station.H)*Station.Pminus(:,:,iIter,jStation)*(eye(4)+Station.K(:,:,iIter,jStation)*Station.H)'-Station.K(:,:,iIter,jStation)*Station.R(:,:,iIter,jStation)*Station.K(:,:,iIter,jStation)';
+        Station.P(:,:,iIter,jStation) = (eye(4)-Station.K(:,:,iIter,jStation)*Station.H)*Station.Pminus(:,:,iIter,jStation);
         
     end
     for jStation = 1:Station1.nStation
         
-        Station1.Xhat(:,iIter,jStation) = Target.F * Station1.Xhat(:,iIter-1,jStation);
+        Station1.Xhat(:,iIter,jStation) = Target.F*Station1.Xhat(:,iIter-1,jStation);
         Station1.Pminus(:,:,iIter,jStation)=Target.F*Station1.P(:,:,iIter-1,jStation)*Target.F'+Target.Q(:,:,iIter);
         Station1.K(:,:,iIter,jStation) = Station1.Pminus(:,:,iIter,jStation)*Station1.H'/(Station1.H*Station1.Pminus(:,:,iIter,jStation)*Station1.H'+Station1.R(:,:,iIter,jStation));
         Station1.Xhat(:,iIter,jStation) = Station1.Xhat(:,iIter,jStation) + Station1.K(:,:,iIter,jStation)*(Station1.Z(:,iIter,jStation)-Station1.H*Station1.Xhat(:,iIter,jStation));
-        Station1.P(:,:,iIter,jStation) = (eye(4)-Station1.K(:,:,iIter,jStation)*Station1.H)*Station1.Pminus(:,:,iIter,jStation)*(eye(4)+Station1.K(:,:,iIter,jStation)*Station1.H)'-Station1.K(:,:,iIter,jStation)*Station1.R(:,:,iIter,jStation)*Station1.K(:,:,iIter,jStation)';
+        Station1.P(:,:,iIter,jStation) = (eye(4)-Station1.K(:,:,iIter,jStation)*Station1.H)*Station1.Pminus(:,:,iIter,jStation);
         
     end
     for i_ci = 1:Station.nStation
@@ -227,7 +225,7 @@ colorbar;
 yticks([1 2 3 4 5])
 xlabel('时刻/s');
 ylabel('雷达标号');
-% title('优化资源分配图');
+title('优化资源分配图');
 exportgraphics(exp8_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_1.emf','Resolution',600);
 exportgraphics(exp8_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_1.jpg','Resolution',600);
 
@@ -239,30 +237,19 @@ caxis([min(min(Station.powerallocation)) max(max(Station.powerallocation))]);
 yticks([1 2 3 4 5])
 xlabel('时刻/s');
 ylabel('雷达标号');
-% title('平均分配图');
+title('平均分配图');
 exportgraphics(exp8_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_2.emf','Resolution',600);
 exportgraphics(exp8_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_2.jpg','Resolution',600);
 
 
 exp8_3 = figure('Name','exp8_3');
 hold on;
-plot(monte_PCRB,'Color','#0072BD','LineWidth',2,'DisplayName','资源调度');
-plot(monte_PCRB1,'Color','#D95319','LineStyle',':','LineWidth',2,'DisplayName','均匀分配');
-plot(monte_Xci,'Color','#77AC30','LineStyle','-.','LineWidth',2,'DisplayName','KF 滤波 CI 融合后轨迹');
-plot(monte_Xci1,'Color','#7E2F8E','LineStyle','--','LineWidth',2,'DisplayName','均匀分配 KF 滤波 CI 融合后轨迹');
+plot(monte_PCRB,'Color','#0072BD','LineWidth',2,'DisplayName','优化功率分配PCRB');
+plot(monte_PCRB1,'Color','#D95319','LineStyle',':','LineWidth',2,'DisplayName','均匀功率分配PCRB');
+plot(monte_Xci,'Color','#77AC30','LineStyle','-.','LineWidth',2,'DisplayName','优化功率分配RMSE');
+plot(monte_Xci1,'Color','#7E2F8E','LineStyle','--','LineWidth',2,'DisplayName','均匀功率分配RMSE');
 ylabel('RMSE/m','FontSize',20);
 xlabel('仿真时刻/s','FontSize',20);
 legend();
 exportgraphics(exp8_3,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_3.emf','Resolution',600);
 exportgraphics(exp8_3,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_3.jpg','Resolution',600);
-
-% exp8_3 = figure('Name','exp8_3');
-% hold on;
-% plot(monte_Xci(1,:),'Color','#77AC30','LineStyle','-.','LineWidth',2,'DisplayName','KF 滤波 CI 融合后轨迹');
-% plot(monte_Xci1(1,:),'Color','#77AC30','LineWidth',2,'DisplayName','均匀分配 KF 滤波 CI 融合后轨迹');
-% title('量测轨迹和滤波轨迹和融合轨迹','FontSize',20);
-% xlabel('x/m','FontSize',20);
-% ylabel('y/m','FontSize',20);
-% legend();
-% exportgraphics(exp8_3,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_1.emf','Resolution',600);
-% exportgraphics(exp8_3,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_1.jpg','Resolution',600);

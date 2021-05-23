@@ -5,7 +5,7 @@ function Station = cartesianMeasurementSingle(Target,Station,iIter)
 %        R：量测协方差
 %OUTPUTS：Z：量测轨迹
 for iStation = 1:Station.nStation
-    delta = Station.R(:,:,iIter,iStation).^0.5;
+    delta = (Station.R(:,:,iIter,iStation)).^0.5;
     Station.Z(:,iIter,iStation) = Station.H*Target.X(:,iIter);
     Station.Z(1,iIter,iStation) = Station.Z(1,iIter,iStation) + delta(1,1)*randn(1,1);
     Station.Z(2,iIter,iStation) = Station.Z(2,iIter,iStation) + delta(2,2)*randn(1,1);

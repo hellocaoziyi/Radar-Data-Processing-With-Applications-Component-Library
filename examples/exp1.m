@@ -19,9 +19,10 @@ end
 
 exp1_1 = figure('Name','exp1_1');
 hold on;
+box on;
 plot(Target.X(1,:),Target.X(3,:),'Color','#0072BD','LineWidth',2,'DisplayName','目标运动轨迹');
 legend();
-title('运动轨迹','FontSize',20);
+% title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20);
 exportgraphics(exp1_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.emf','Resolution',600);
