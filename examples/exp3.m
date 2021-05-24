@@ -1,5 +1,7 @@
-clearvars -except i_exp nMonte;
+clearvars -except i_exp;
 close all;
+
+load('C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp2\exp2_1','nMonte');
 
 for iMonte = 1:nMonte
     
@@ -10,11 +12,12 @@ for iMonte = 1:nMonte
     
     storageName = strcat('exp3_',num2str(iMonte),'.mat');
     save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp3\',storageName],...
-        'Target','Station');
+        'Target','Station','nMonte');
     
 end
 
 exp3_1 = figure('Name','exp3_1');
+exp3_1.Visible = 'off';
 hold on;
 plot(Target.X(1,:),Target.X(3,:),'Color','#0072BD','LineStyle','-','LineWidth',2,'DisplayName','真实轨迹');
 scatter(Station.address(1,1),Station.address(2,1),'MarkerEdgeColor','#D95319','Marker','o','LineWidth',2,'DisplayName','雷达1 量测点');
@@ -29,3 +32,4 @@ ylabel('y/m','FontSize',20);
 legend();
 exportgraphics(exp3_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp3_1.emf','Resolution',600);
 exportgraphics(exp3_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp3_1.jpg','Resolution',600);
+exp3_1.Visible = 'on';

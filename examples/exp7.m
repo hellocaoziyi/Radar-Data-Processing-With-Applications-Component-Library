@@ -1,7 +1,8 @@
-clearvars -except i_exp nMonte;
+clearvars -except i_exp;
 close all;
-storageName2 = strcat('exp6','.mat');
-load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp6\',storageName2]);
+
+load('C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp6\exp6.mat');
+
 
 H = Station.H;
 HE = Station.HE;
@@ -45,6 +46,7 @@ for iIter = 2:Target.nIter
 end
 
 exp7_1 = figure('Name','exp7_1');
+exp7_1.Visible = 'off';
 hold on;
 plot(Station.PCRB(:,1),'Color','#D95319','LineStyle',':','Marker','d','MarkerIndices',1:5:size(Station.PCRB,1),'LineWidth',1,'DisplayName','雷达1 KF PCRB');
 plot(Station.PCRB(:,2),'Color','#EDB120','LineStyle','--','Marker','d','MarkerIndices',1:5:size(Station.PCRB,1),'LineWidth',1,'DisplayName','雷达2 KF PCRB');
@@ -63,6 +65,7 @@ exportgraphics(exp7_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With
 exportgraphics(exp7_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_1.jpg','Resolution',600);
 
 exp7_2 = figure('Name','exp7_2');
+exp7_2.Visible = 'off';
 hold on;
 plot(Station.PCRBE(:,1),'Color','#D95319','LineStyle',':','Marker','d','MarkerIndices',1:5:size(Station.PCRBE,1),'LineWidth',1,'DisplayName','雷达1 EKF PCRB');
 plot(Station.PCRBE(:,2),'Color','#EDB120','LineStyle','--','Marker','d','MarkerIndices',1:5:size(Station.PCRBE,1),'LineWidth',1,'DisplayName','雷达2 EKF PCRB');
@@ -79,3 +82,6 @@ title('EKF克拉美罗下界','FontSize',20);
 legend();
 exportgraphics(exp7_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_2.emf','Resolution',600);
 exportgraphics(exp7_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_2.jpg','Resolution',600);
+
+exp7_1.Visible = 'on';
+exp7_2.Visible = 'on';

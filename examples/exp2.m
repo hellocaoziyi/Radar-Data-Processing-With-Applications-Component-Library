@@ -1,7 +1,10 @@
-clearvars -except i_exp nMonte;
+clearvars -except i_exp;
 close all;
 
 %每次使用相同运动轨迹
+storageName = strcat('exp1_',num2str(1),'.mat');
+load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'nMonte');
+
 storageName = strcat('exp1_',num2str(1),'.mat');
 load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
 
@@ -24,11 +27,13 @@ Station = polarMeasurement(Target,Station);
 storageName = strcat('exp2_',num2str(imonte),'.mat');
 save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp2\',storageName],...
     'Target',...
-    'Station');
+    'Station',...
+    'nMonte');
 
 end
 
 exp2_1 = figure('Name','exp2_1');
+exp2_1.Visible = 'off';
 hold on;
 plot(Target.X(1,:),Target.X(3,:),'Color','#0072BD','LineStyle','-','LineWidth',2,'DisplayName','真实轨迹');
 scatter(Station.address(1,1),Station.address(2,1),'MarkerEdgeColor','#D95319','Marker','o','LineWidth',2,'DisplayName','雷达1 量测点');
@@ -43,3 +48,4 @@ ylabel('y/m','FontSize',20);
 legend();
 exportgraphics(exp2_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp2_1.emf','Resolution',600);
 exportgraphics(exp2_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp2_1.jpg','Resolution',600);
+exp2_1.Visible = 'on';
