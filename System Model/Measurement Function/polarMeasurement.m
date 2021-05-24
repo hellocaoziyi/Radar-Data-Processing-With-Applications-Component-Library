@@ -19,7 +19,7 @@ for iStation = 1:Station.nStation
                 modZpol = mod(Station.Zpol(1,jIter-1,iStation),2*pi);
                 if modZpol > pi
                     modZpol2 = modZpol - 2*pi;
-                    if (Station.Zpol(1,jIter,iStation) - modZpol(2,iStation)) > pi
+                if (Station.Zpol(1,jIter,iStation) - modZpol) > pi
                         Station.Zpol(1,jIter,iStation) = Station.Zpol(1,jIter-1,iStation) - (modZpol - Station.Zpol(1,jIter,iStation));
                     elseif Station.Zpol(1,jIter,iStation) < modZpol2
                         Station.Zpol(1,jIter,iStation) = Station.Zpol(1,jIter-1,iStation) - (modZpol2 - Station.Zpol(1,jIter,iStation));
