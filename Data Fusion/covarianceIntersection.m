@@ -11,7 +11,7 @@ w = zeros(nIter,nStation);
 sumw = zeros(1,nIter);
 for iIter = 1:nIter
     for jStation = 1:nStation
-        w(iIter,jStation) = trace(Station.R(:,:,nIter,jStation));
+        w(iIter,jStation) = trace(Station.P(:,:,nIter,jStation));
         sumw(1,iIter) = inv(w(iIter,jStation))+sumw(1,iIter);
     end
 end
