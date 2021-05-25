@@ -66,8 +66,8 @@ for iStation = 1:nStation
         
         
         %计算直角坐标系下的噪声协方差
-        A = [cos(Zpol(1,1,iStation)) -1*Zpol(2,1,iStation)*sin(Zpol(1,1,iStation));...
-            sin(Zpol(1,1,iStation)) Zpol(2,1)*cos(Zpol(1,1,iStation))];
+        A = [cos(Zpol(1,iIter,iStation)) -1*Zpol(2,iIter,iStation)*sin(Zpol(1,iIter,iStation));...
+            sin(Zpol(1,iIter,iStation)) Zpol(2,iIter,iStation)*cos(Zpol(1,iIter,iStation))];
         R(:,:,iIter,iStation) = A*[Rpol(2,2,iStation) 0;0 Rpol(1,1,iStation)]*A';
         
         %新息

@@ -17,9 +17,9 @@ for imonte = 1:nMonte
 Station.address = [1500 5500;4000 4000;6000 3000]';
 Station.nStation = size(Station.address,2);
 
-Rpol1 = [0.04^2 0;0 60^2];
+Rpol1 = [0.07^2 0;0 120^2];
 Rpol2 = [0.05^2 0;0 100^2];
-Rpol3 = [0.09^2 0;0 150^2];
+Rpol3 = [0.04^2 0;0 60^2];
 Station.Rpol = cat(3,Rpol1,Rpol2,Rpol3);
 
 Station = polarMeasurement(Target,Station);

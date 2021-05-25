@@ -4,7 +4,7 @@ close all;
 nMonte = 50;
 
 Target.X0 = [1000 170 8000 -120]';
-Target.q = [5^2 0;0 5^2];
+Target.q = [1^2 0;0 1^2];
 Target.nIter = 50;
 Target.dt = 1;
 
