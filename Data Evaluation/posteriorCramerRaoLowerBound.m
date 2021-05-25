@@ -3,18 +3,13 @@ function Station = posteriorCramerRaoLowerBound(Target,Station,mode)
 %INPUT: Target:跟踪目标
 %       Station：观测雷达
 if mode == "KF"
+    
     Q = Target.Q;
-    T = Target.dt;
-    Rpol = Station.Rpol;
     H = Station.H;
     Z = Station.Zcart;
     address = Station.address;
-    P = Station.P;
-    
-    F = [1 T 0 0
-    0 1 0 0
-    0 0 1 T
-    0 0 0 1];
+    P = Station.P;   
+    F =  Target.F;
     
     nIter = Target.nIter;
     nStation = Station.nStation;
@@ -25,20 +20,11 @@ if mode == "KF"
         Z(1,:,iStation) = Z(1,:,iStation) - address(1,iStation);
         Z(2,:,iStation) = Z(2,:,iStation) - address(2,iStation);
         
-        Zpol = cartesian2Polar(Z(1,1,iStation),Z(2,1,iStation));
-        A = [cos(Zpol(1,1)) -1*Zpol(2,1)*sin(Zpol(1,1));...
-            sin(Zpol(1,1)) Zpol(2,1)*cos(Zpol(1,1))];
-        R(:,:,1,iStation) = A*[Rpol(2,2,iStation) 0;0 Rpol(1,1,iStation)]*A';
-        
-        J(:,:,1,iStation) =inv(Q(:,:,1) + P(:,:,1,iStation))+H'*inv(R(:,:,1,iStation))*H;
+        J(:,:,1,iStation) =inv(Q(:,:,1) + P(:,:,1,iStation))+H'*inv(Station.R(:,:,1,iStation))*H;
         PCRBdata(1,iStation) = (trace(inv(J(:,:,1,iStation)))).^0.5;
         
         for jIter = 2:nIter
-            Zpol = cartesian2Polar(Z(1,jIter,iStation),Z(2,jIter,iStation));
-            A = [cos(Zpol(1,1)) -1*Zpol(2,1)*sin(Zpol(1,1));...
-                sin(Zpol(1,1)) Zpol(2,1)*cos(Zpol(1,1))];
-            R(:,:,jIter,iStation) = A*[Rpol(2,2,iStation) 0;0 Rpol(1,1,iStation)]*A';
-            J(:,:,jIter,iStation) = inv(Q(:,:,jIter) + F*inv(J(:,:,jIter-1,iStation))*F')+H'*inv(R(:,:,jIter,iStation))*H;
+            J(:,:,jIter,iStation) = inv(Q(:,:,jIter) + F*inv(J(:,:,jIter-1,iStation))*F')+H'*inv(Station.R(:,:,jIter,iStation))*H;
             PCRBdata(jIter,iStation) = (trace(inv(J(:,:,jIter,iStation)))).^0.5;
         end
     end

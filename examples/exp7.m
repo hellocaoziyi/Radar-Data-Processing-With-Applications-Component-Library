@@ -15,16 +15,7 @@ PCRBci(1) = (trace(inv(J(:,:,1)))).^0.5;
 Station = posteriorCramerRaoLowerBound(Target,Station,"KF");
 
 for iIter = 2:Target.nIter
-    A1_1 = [cos(Station.Zpol(1,iIter,1)) -1*Station.Zpol(2,iIter,1)*sin(Station.Zpol(1,iIter,1));...
-        sin(Station.Zpol(1,iIter,1)) Station.Zpol(2,iIter,1)*cos(Station.Zpol(1,iIter,1))];
-    R1_1(:,:,iIter) = A1_1*[Station.Rpol(2,2,1) 0;0 Station.Rpol(1,1,1)]*A1_1';
-    A1_2 = [cos(Station.Zpol(1,iIter,2)) -1*Station.Zpol(2,iIter,2)*sin(Station.Zpol(1,iIter,2));...
-        sin(Station.Zpol(1,iIter,2)) Station.Zpol(2,iIter,2)*cos(Station.Zpol(1,iIter,2))];
-    R1_2(:,:,iIter) = A1_2*[Station.Rpol(2,2,2) 0;0 Station.Rpol(1,1,2)]*A1_2';
-    A1_3 = [cos(Station.Zpol(1,iIter,3)) -1*Station.Zpol(2,iIter,3)*sin(Station.Zpol(1,iIter,3));...
-        sin(Station.Zpol(1,iIter,3)) Station.Zpol(2,iIter,3)*cos(Station.Zpol(1,iIter,3))];
-    R1_3(:,:,iIter) = A1_3*[Station.Rpol(2,2,3) 0;0 Station.Rpol(1,1,3)]*A1_3';
-    Jz(:,:,iIter) = H'*inv(R1_1(:,:,iIter))*H + H'*inv(R1_2(:,:,iIter))*H + H'*inv(R1_2(:,:,iIter))*H;
+    Jz(:,:,iIter) = H'*inv(Station.R(:,:,iIter,1))*H + H'*inv(Station.R(:,:,iIter,2))*H + H'*inv(Station.R(:,:,iIter,3))*H;
     J(:,:,iIter) = inv(Target.Q(:,:,iIter) + F*inv(J(:,:,iIter-1))*F')+Jz(:,:,iIter);
     PCRBci(iIter) = (trace(inv(J(:,:,iIter)))).^0.5;
 end
