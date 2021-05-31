@@ -1,4 +1,4 @@
-for i_exp = 1:7
+for i_exp = 1:8
     exp_name = strcat('exp',num2str(i_exp),'.m');
     fprintf('开始运行exp%d\n', i_exp);
     run(exp_name);
