@@ -5,16 +5,16 @@ close all;
 storageName = strcat('exp1_',num2str(1),'.mat');
 load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'nMonte');
 
-storageName = strcat('exp1_',num2str(1),'.mat');
-load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
-
-for imonte = 1:nMonte
-
-%每次使用不同运动轨迹
-% storageName = strcat('exp1_',num2str(monte),'.mat');
+% storageName = strcat('exp1_',num2str(1),'.mat');
 % load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
 
-Station.address = [1500 5500;4000 4000;6000 3000]';
+for iMonte = 1:nMonte
+
+%每次使用不同运动轨迹
+storageName = strcat('exp1_',num2str(iMonte),'.mat');
+load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
+
+Station.address = [1400 5300;3200 3500;5900 2300]';
 Station.nStation = size(Station.address,2);
 
 Rpol1 = [0.07^2 0;0 120^2];
@@ -24,7 +24,7 @@ Station.Rpol = cat(3,Rpol1,Rpol2,Rpol3);
 
 Station = polarMeasurement(Target,Station);
 
-storageName = strcat('exp2_',num2str(imonte),'.mat');
+storageName = strcat('exp2_',num2str(iMonte),'.mat');
 save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp2\',storageName],...
     'Target',...
     'Station',...
