@@ -11,4 +11,4 @@ grid on;
 plot(distance,rho,'Color','#0072BD','LineWidth',2,'DisplayName','距离噪声'); 
 legend();
 ylabel('距离噪声标准差/m','FontSize',20); 
-xlabel('目标距离/W','FontSize',20);
+xlabel('目标距离/m','FontSize',20);
