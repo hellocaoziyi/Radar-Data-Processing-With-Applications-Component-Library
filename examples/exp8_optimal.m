@@ -1,6 +1,7 @@
-clear;
+clearvars -except i_exp;
 clc;
 close all;
+load('pathname.mat');
 
 % %生成相应的目标状态
 % Target.X0 = [1000 170 8000 -120]';
@@ -12,12 +13,12 @@ close all;
 % Target = constantVelocity(Target);
 
 storageName = strcat('exp8_',num2str(1),'.mat');
-    load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName]);
+    load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName]);
 iMonte_Xci = zeros(Target.nIter,nMonte);
 for iMonte = 1:nMonte
     
     storageName = strcat('exp8_',num2str(iMonte),'.mat');
-    load(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName]);
+    load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName]);
     
     %量测参数
     Station.address = [1400 5800;2100 4700;2800 3900;3900 3100;5100 2500]';
@@ -145,8 +146,8 @@ yticks([1 2 3 4 5])
 xlabel('时刻','FontSize',20);
 ylabel('雷达标号','FontSize',20);
 % title('优化资源分配图','FontSize',20);
-exportgraphics(exp8_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_1.emf','Resolution',600);
-exportgraphics(exp8_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_1.jpg','Resolution',600);
+exportgraphics(exp8_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_1.emf'],'Resolution',600);
+exportgraphics(exp8_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_1.jpg'],'Resolution',600);
 
 
 exp8_2 = figure('Name','exp8_2');
@@ -161,8 +162,8 @@ title('量测轨迹和滤波轨迹和融合轨迹','FontSize',20);
 xlabel('x/m','FontSize',20);
 ylabel('y/m','FontSize',20);
 legend();
-exportgraphics(exp8_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_2.emf','Resolution',600);
-exportgraphics(exp8_2,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_2.jpg','Resolution',600);
+exportgraphics(exp8_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_2.emf'],'Resolution',600);
+exportgraphics(exp8_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_optimal_2.jpg'],'Resolution',600);
 
 exp8_3 = figure('Name','exp8_3');
 hold on;
@@ -178,5 +179,5 @@ PCRB_optimal = Station.PCRB;
 Xci_optimal = monte_Xci;
 
 storageName = strcat('exp8_optimal','.mat');
-save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName],...
+save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName],...
     'PCRB_optimal','Xci_optimal');

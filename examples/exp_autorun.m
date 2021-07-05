@@ -1,3 +1,4 @@
+tic
 for i_exp = 1:8
     exp_name = strcat('exp',num2str(i_exp),'.m');
     fprintf('开始运行exp%d\n', i_exp);
@@ -7,3 +8,4 @@ for i_exp = 1:8
     fprintf('exp%d运行完成\n', i_exp);
 end
 fprintf('exp1到exp%d已经全部运行完成\n', i_exp);
+toc

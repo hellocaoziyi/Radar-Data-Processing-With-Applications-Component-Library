@@ -1,6 +1,9 @@
 clearvars -except i_exp;
 close all;
 
+username = 'caoziyi';
+pathname = ['C:\Users\',username,'\Documents\GitHub\'];
+save('pathname.mat','pathname');
 nMonte = 50;
 
 Target.X0 = [1000 170 8000 -120]';
@@ -13,7 +16,7 @@ for iMonte = 1:nMonte
 Target = constantVelocity(Target);
 
 storageName = strcat('exp1_',num2str(iMonte),'.mat');
-save(['C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'Target','nMonte');
+save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'Target','nMonte');
 
 end
 
@@ -25,6 +28,6 @@ legend();
 title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20);
-exportgraphics(exp1_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.emf','Resolution',600);
-exportgraphics(exp1_1,'C:\Users\nick\Documents\GitHub\Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.jpg','Resolution',600);
+exportgraphics(exp1_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.emf'],'Resolution',600);
+exportgraphics(exp1_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.jpg'],'Resolution',600);
 exp1_1.Visible = 'on';
