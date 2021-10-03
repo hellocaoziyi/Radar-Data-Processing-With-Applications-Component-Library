@@ -1,5 +1,9 @@
 # Radar Data Processing With Applications Component Library
 # 雷达数据处理应用器件库
+## 安装器件库
+### 1.安装必要的依赖项：CVX工具箱
+### 2.将文件夹添加到matlab的检索路径当中
+### 3.在运行例程之前，先运行根目录中的setup.m文件
 ## 编程风格
 ### 1.命名惯例
 #### 变量

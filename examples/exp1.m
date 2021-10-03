@@ -1,9 +1,7 @@
 clearvars -except i_exp;
 close all;
 
-username = 'caoziyi';
-pathname = ['C:\Users\',username,'\Documents\GitHub\'];
-save('pathname.mat','pathname');
+load('pathname.mat');
 nMonte = 50;
 
 Target.X0 = [1000 170 8000 -120]';
