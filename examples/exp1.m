@@ -14,7 +14,7 @@ for iMonte = 1:nMonte
 Target = constantVelocity(Target);
 
 storageName = strcat('exp1_',num2str(iMonte),'.mat');
-save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'Target','nMonte');
+save([pathname,'\examples\data\exp1\',storageName],'Target','nMonte');
 
 end
 
@@ -26,6 +26,6 @@ legend();
 title('运动轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20);
-exportgraphics(exp1_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.emf'],'Resolution',600);
-exportgraphics(exp1_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp1_1.jpg'],'Resolution',600);
+exportgraphics(exp1_1,[pathname,'\examples\pic\exp1_1.emf'],'Resolution',600);
+exportgraphics(exp1_1,[pathname,'\examples\pic\exp1_1.jpg'],'Resolution',600);
 exp1_1.Visible = 'on';

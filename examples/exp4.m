@@ -2,17 +2,17 @@ clearvars -except i_exp;
 close all;
 load('pathname.mat');
 
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp3\exp3_1'],'nMonte');
+load([pathname,'\examples\data\exp3\exp3_1'],'nMonte');
 
 for monte = 1:nMonte
     
 storageName = strcat('exp3_',num2str(monte),'.mat');
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp3\',storageName]);
+load([pathname,'\examples\data\exp3\',storageName]);
 
 Station = extendedKalmanFilter(Target,Station);
 
 storageName = strcat('exp4_',num2str(monte),'.mat');
-save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp4\',storageName],...
+save([pathname,'\examples\data\exp4\',storageName],...
     'Target','Station','nMonte');
 
 end
@@ -31,6 +31,6 @@ title('运动轨迹和滤波轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20); 
 legend();
-exportgraphics(exp4_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp4_1.emf'],'Resolution',600);
-exportgraphics(exp4_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp4_1.jpg'],'Resolution',600);
+exportgraphics(exp4_1,[pathname,'\examples\pic\exp4_1.emf'],'Resolution',600);
+exportgraphics(exp4_1,[pathname,'\examples\pic\exp4_1.jpg'],'Resolution',600);
 exp4_1.Visible = 'on';

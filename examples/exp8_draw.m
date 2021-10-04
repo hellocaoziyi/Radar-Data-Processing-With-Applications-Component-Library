@@ -2,8 +2,8 @@ clearvars -except i_exp;
 close all;
 load('pathname.mat');
 
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\exp8_uniform.mat']);
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\exp8_optimal.mat']);
+load([pathname,'\examples\data\exp8\exp8_uniform.mat']);
+load([pathname,'\examples\data\exp8\exp8_optimal.mat']);
 
 exp8_1=figure('Name','exp8_draw');
 hold on;
@@ -16,5 +16,5 @@ plot(Xci_uniform,'Color','#D95319','LineStyle',':','LineWidth',2,'DisplayName','
 xlabel('时刻/s','FontSize',20);
 ylabel('误差/m','FontSize',20);
 legend();
-exportgraphics(exp8_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_1.emf'],'Resolution',600);
-exportgraphics(exp8_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_1.jpg'],'Resolution',600);
+exportgraphics(exp8_1,[pathname,'\examples\pic\exp8_1.emf'],'Resolution',600);
+exportgraphics(exp8_1,[pathname,'\examples\pic\exp8_1.jpg'],'Resolution',600);

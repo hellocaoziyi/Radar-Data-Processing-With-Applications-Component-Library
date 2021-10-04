@@ -2,7 +2,7 @@ clearvars -except i_exp;
 close all;
 load('pathname.mat');
 
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\exp5_1']);
+load([pathname,'\examples\data\exp5\exp5_1']);
 
 Xhat_monte = zeros(Target.nIter,Station.nStation);
 XEhat_monte = zeros(Target.nIter,Station.nStation);
@@ -12,7 +12,7 @@ XEhat_ci_monte = 0;
 for iMonte = 1:nMonte
     
     storageName = strcat('exp5_',num2str(iMonte),'.mat');
-    load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp5\',storageName]);
+    load([pathname,'\examples\data\exp5\',storageName]);
     
     for jStation = 1:Station.nStation
         Xhat_monte(:,jStation) = Xhat_monte(:,jStation)' + (Target.X(1,:) - Station.Xhat(1,:,jStation)).^2 + (Target.X(3,:) - Station.Xhat(3,:,jStation)).^2;
@@ -46,8 +46,8 @@ title('Kalman 滤波误差分析','FontSize',20);
 legend();
 xlabel('仿真时间/s','FontSize',20);
 ylabel('RMSE/m','FontSize',20);
-exportgraphics(exp6_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_1.emf'],'Resolution',600);
-exportgraphics(exp6_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_1.jpg'],'Resolution',600);
+exportgraphics(exp6_1,[pathname,'\examples\pic\exp6_1.emf'],'Resolution',600);
+exportgraphics(exp6_1,[pathname,'\examples\pic\exp6_1.jpg'],'Resolution',600);
 
 exp6_2 = figure('Name','exp6_2');
 exp6_2.Visible = 'off';
@@ -60,8 +60,8 @@ title('Extended Kalman 滤波误差分析','FontSize',20);
 legend();
 xlabel('仿真时间/s','FontSize',20);
 ylabel('RMSE/m','FontSize',20);
-exportgraphics(exp6_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_2.emf'],'Resolution',600);
-exportgraphics(exp6_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_2.jpg'],'Resolution',600);
+exportgraphics(exp6_2,[pathname,'\examples\pic\exp6_2.emf'],'Resolution',600);
+exportgraphics(exp6_2,[pathname,'\examples\pic\exp6_2.jpg'],'Resolution',600);
 
 exp6_3 = figure('Name','exp6_3');
 exp6_3.Visible = 'off';
@@ -75,11 +75,11 @@ title('量测轨迹和滤波轨迹和融合轨迹','FontSize',20);
 xlabel('x/m','FontSize',20);
 ylabel('y/m','FontSize',20);
 legend();
-exportgraphics(exp6_3,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_3.emf'],'Resolution',600);
-exportgraphics(exp6_3,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp6_3.jpg'],'Resolution',600);
+exportgraphics(exp6_3,[pathname,'\examples\pic\exp6_3.emf'],'Resolution',600);
+exportgraphics(exp6_3,[pathname,'\examples\pic\exp6_3.jpg'],'Resolution',600);
 
 storageName = strcat('exp6','.mat');
-save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp6\',storageName],...
+save([pathname,'\examples\data\exp6\',storageName],...
     'Target','Station','nMonte');
 exp6_1.Visible = 'on';
 exp6_2.Visible = 'on';

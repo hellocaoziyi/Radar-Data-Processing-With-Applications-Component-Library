@@ -4,16 +4,16 @@ load('pathname.mat');
 
 %每次使用相同运动轨迹
 storageName = strcat('exp1_',num2str(1),'.mat');
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName],'nMonte');
+load([pathname,'\examples\data\exp1\',storageName],'nMonte');
 
 % storageName = strcat('exp1_',num2str(1),'.mat');
-% load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
+% load([pathname,'\examples\data\exp1\',storageName]);
 
 for iMonte = 1:nMonte
 
 %每次使用不同运动轨迹
 storageName = strcat('exp1_',num2str(iMonte),'.mat');
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp1\',storageName]);
+load([pathname,'\examples\data\exp1\',storageName]);
 
 Station.address = [1400 5300;3200 3500;5900 2300]';
 Station.nStation = size(Station.address,2);
@@ -26,7 +26,7 @@ Station.Rpol = cat(3,Rpol1,Rpol2,Rpol3);
 Station = polarMeasurement(Target,Station);
 
 storageName = strcat('exp2_',num2str(iMonte),'.mat');
-save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp2\',storageName],...
+save([pathname,'\examples\data\exp2\',storageName],...
     'Target',...
     'Station',...
     'nMonte');
@@ -47,6 +47,6 @@ title('运动轨迹和量测轨迹','FontSize',20);
 xlabel('x/m','FontSize',20); 
 ylabel('y/m','FontSize',20); 
 legend();
-exportgraphics(exp2_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp2_1.emf'],'Resolution',600);
-exportgraphics(exp2_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp2_1.jpg'],'Resolution',600);
+exportgraphics(exp2_1,[pathname,'\examples\pic\exp2_1.emf'],'Resolution',600);
+exportgraphics(exp2_1,[pathname,'\examples\pic\exp2_1.jpg'],'Resolution',600);
 exp2_1.Visible = 'on';

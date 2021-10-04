@@ -2,7 +2,7 @@ clearvars -except i_exp;
 close all;
 load('pathname.mat');
 
-load([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp6\exp6.mat']);
+load([pathname,'\examples\data\exp6\exp6.mat']);
 
 H = Station.H;
 HE = Station.HE;
@@ -57,8 +57,8 @@ xlabel('仿真时间/s','FontSize',20);
 ylabel('RMSE/m','FontSize',20);
 % title('KF克拉美罗下界','FontSize',20);
 legend();
-exportgraphics(exp7_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_1.emf'],'Resolution',600);
-exportgraphics(exp7_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_1.jpg'],'Resolution',600);
+exportgraphics(exp7_1,[pathname,'\examples\pic\exp7_1.emf'],'Resolution',600);
+exportgraphics(exp7_1,[pathname,'\examples\pic\exp7_1.jpg'],'Resolution',600);
 
 exp7_2 = figure('Name','exp7_2');
 exp7_2.Visible = 'off';
@@ -77,8 +77,8 @@ xlabel('仿真时间/s','FontSize',20);
 ylabel('RMSE/m','FontSize',20);
 % title('EKF克拉美罗下界','FontSize',20);
 legend();
-exportgraphics(exp7_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_2.emf'],'Resolution',600);
-exportgraphics(exp7_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp7_2.jpg'],'Resolution',600);
+exportgraphics(exp7_2,[pathname,'\examples\pic\exp7_2.emf'],'Resolution',600);
+exportgraphics(exp7_2,[pathname,'\examples\pic\exp7_2.jpg'],'Resolution',600);
 
 exp7_1.Visible = 'on';
 exp7_2.Visible = 'on';

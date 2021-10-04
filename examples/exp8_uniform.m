@@ -132,7 +132,7 @@ for iMonte = 1:nMonte
     end
     iMonte_Xci(:,iMonte) = (Target.X(1,:) - Station.Xci(1,:)).^2 + (Target.X(3,:) - Station.Xci(3,:)).^2;
     storageName = strcat('exp8_',num2str(iMonte),'.mat');
-    save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName],...
+    save([pathname,'\examples\data\exp8\',storageName],...
         'Target','nMonte');
 end
 monte_Xci = (sum(iMonte_Xci,2)./nMonte).^0.5;
@@ -148,8 +148,8 @@ yticks([1 2 3 4 5])
 xlabel('时刻/s','FontSize',20);
 ylabel('雷达标号','FontSize',20);
 % title('优化资源分配图');
-exportgraphics(exp8_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_uniform_1.emf'],'Resolution',600);
-exportgraphics(exp8_1,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_uniform_1.jpg'],'Resolution',600);
+exportgraphics(exp8_1,[pathname,'\examples\pic\exp8_uniform_1.emf'],'Resolution',600);
+exportgraphics(exp8_1,[pathname,'\examples\pic\exp8_uniform_1.jpg'],'Resolution',600);
 
 
 exp8_2 = figure('Name','exp8_2');
@@ -163,8 +163,8 @@ scatter(Station.address(1,:),Station.address(2,:),'MarkerEdgeColor','#D95319','M
 xlabel('x/m','FontSize',20);
 ylabel('y/m','FontSize',20);
 legend();
-exportgraphics(exp8_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_uniform_2.emf'],'Resolution',600);
-exportgraphics(exp8_2,[pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\pic\exp8_uniform_2.jpg'],'Resolution',600);
+exportgraphics(exp8_2,[pathname,'\examples\pic\exp8_uniform_2.emf'],'Resolution',600);
+exportgraphics(exp8_2,[pathname,'\examples\pic\exp8_uniform_2.jpg'],'Resolution',600);
 
 exp8_3 = figure('Name','exp8_3');
 hold on;
@@ -180,5 +180,5 @@ PCRB_uniform = Station.PCRB;
 Xci_uniform = monte_Xci;
 
 storageName = strcat('exp8_uniform','.mat');
-save([pathname,'Radar-Data-Processing-With-Applications-Component-Library\examples\data\exp8\',storageName],...
+save([pathname,'\examples\data\exp8\',storageName],...
     'PCRB_uniform','Xci_uniform');
