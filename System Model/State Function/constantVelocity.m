@@ -7,15 +7,23 @@ function Target = constantVelocity(Target)
 %OUTPUTS:   Target.X：运动状态，是一个4*k的矩阵。
 %           Target.Q：CV模型过程噪声协方差矩阵。
 %           Target.F：状态转换矩阵
-Target.F = [1 Target.dt 0 0;0 1 0 0;0 0 1 Target.dt;0 0 0 1];
-Target.GAMMA = [0.5*Target.dt^2 0;Target.dt 0;0 0.5*Target.dt^2;0 Target.dt];
-Target.X = zeros(4,Target.nIter);
-Target.Q = zeros(4,4,Target.nIter);
-Target.Q(:,:,1) = Target.GAMMA*Target.q*Target.GAMMA';
-delta = chol(Target.q);
-Target.X(:,1) = Target.X0;
-for iIter = 2:Target.nIter
-    Target.Q(:,:,iIter) = Target.GAMMA*Target.q*Target.GAMMA';
-    Target.X(:,iIter) = Target.F*Target.X(:,iIter-1)+ Target.GAMMA*(randn(1,2)*delta)';
+for targetnum = 1:Target.num
+    if targetnum == 1
+        Target.F = [1 Target.dt 0 0;0 1 0 0;0 0 1 Target.dt;0 0 0 1];
+        Target.GAMMA = [0.5*Target.dt^2 0;Target.dt 0;0 0.5*Target.dt^2;0 Target.dt];
+        Target.X = zeros(4,Target.num,Target.nIter);
+        Target.Q = zeros(4,4,Target.num,Target.nIter);
+        Target.Q(:,:,targetnum,1) = Target.GAMMA*Target.q(:,:,targetnum)*Target.GAMMA';
+        delta = chol(Target.q(:,:,targetnum));
+        Target.X(:,targetnum,1) = Target.X0(:,targetnum);
+    else
+        Target.Q(:,:,targetnum,1) = Target.GAMMA*Target.q(:,:,targetnum)*Target.GAMMA';
+        delta(:,:,targetnum) = chol(Target.q(:,:,targetnum));
+        Target.X(:,targetnum,1) = Target.X0(:,targetnum);
+    end
+    for iIter = 2:Target.nIter
+        Target.Q(:,:,targetnum,iIter) = Target.GAMMA*Target.q(:,:,targetnum)*Target.GAMMA';
+        Target.X(:,targetnum,iIter) = Target.F*Target.X(:,targetnum,iIter-1)+ Target.GAMMA*(randn(1,2)*delta(:,:,targetnum))';
+    end
 end
 end
